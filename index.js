@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 dotenv.config()
-import { Client, GatewayIntentBits } from 'discord.js';
+import { Client, GatewayIntentBits, EmbedBuilder  } from 'discord.js';
 
 const client = new Client
     ({
@@ -16,10 +16,10 @@ const client = new Client
 const oscar = '256685341723983872';
 const jack = '641702978910158849';
 
-// Test Server
+// Test Server Channel
 const cope_channel_test = '1111364069329485916';
 
-// Big Big Chungus
+// Big Big Chungus Channels
 const cope_channel = '1109161279089807370'
 
 // Load msg
@@ -32,9 +32,29 @@ client.on('ready', () => {
 client.on('messageCreate', async (message) =>
 {
     if (message.author.id == jack) {
-        let date = new Date().toLocaleString();
+        const date = new Date().toLocaleString();
         const cope = client.channels.cache.get(cope_channel);
-        cope.send(' ' + date + ':\n `"' + message.content + '"`');
+        const MessageContent = message.content;
+        var AttachmentURL = (message.attachments.first()?.url);
+
+        if (AttachmentURL != undefined)
+        {
+            const embed_img = new EmbedBuilder()
+            .setTitle(date)
+            .setImage(AttachmentURL);
+
+            // Add message content if exists
+            if (MessageContent != "")
+            {
+                embed_img.setDescription('"' + MessageContent + '"');
+            }
+
+            cope.send({ embeds: [embed_img] }); 
+        }
+        else
+        {
+            cope.send(' ' + date + ':\n `"' + MessageContent + '"`');
+        }
     }
 });
 
@@ -50,6 +70,7 @@ client.on('messageCreate', async (message) =>
             break;
         case 'stick':
             message.reply({ files: ['assets/stick.png'] });
+            break;
     }
 });
         
