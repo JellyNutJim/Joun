@@ -1,1 +1,3 @@
 # Joun
+
+A Discord Bot

@@ -27,7 +27,6 @@ client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
     });
 
-
 // Message From User
 client.on('messageCreate', async (message) =>
 {
