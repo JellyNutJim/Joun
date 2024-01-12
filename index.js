@@ -1,6 +1,8 @@
-import dotenv from 'dotenv'
-dotenv.config()
-import { Client, GatewayIntentBits, EmbedBuilder  } from 'discord.js';
+const dotenv = require('dotenv');
+dotenv.config();
+const fs = require('node:fs');
+const path = require('node:path');
+const { Client, Collection, GatewayIntentBits  } = require('discord.js');
 
 const client = new Client
     ({
@@ -12,65 +14,47 @@ const client = new Client
         ],
     });
 
-// Users
-const oscar = '256685341723983872';
-const jack = '641702978910158849';
+// So commands can be used from other files
+client.commands = new Collection();
 
-// Test Server Channel
-const cope_channel_test = '1111364069329485916';
+const foldersPath = path.join(__dirname, 'commands');
+const commandFolders = fs.readdirSync(foldersPath);
 
-// Big Big Chungus Channels
-const cope_channel = '1109161279089807370'
+for (const folder of commandFolders) {
+    const commandsPath = path.join(foldersPath, folder);
+    const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+    for (const file of commandFiles) {
+        const filePath = path.join(commandsPath, file);
+        const command = require(filePath);
+        // Set a new item in the Collection with the key as the command name and the value as the exported module
+        if ('data' in command && 'execute' in command) {
+            client.commands.set(command.data.name, command);
+        } else {
+            console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+        }
+    }
+}
+
+const eventsPath = path.join(__dirname, 'events');
+const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+
+for (const file of eventFiles) {
+	const filePath = path.join(eventsPath, file);
+	const event = require(filePath);
+	if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args));
+	} else {
+		client.on(event.name, (...args) => event.execute(...args));
+	}
+}
 
 // Load msg
+/*
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    });
+    });*/
 
-// Message From User
-client.on('messageCreate', async (message) =>
-{
-    if (message.author.id == jack) {
-        const date = new Date().toLocaleString();
-        const cope = client.channels.cache.get(cope_channel);
-        const MessageContent = message.content;
-        var AttachmentURL = (message.attachments.first()?.url);
 
-        if (AttachmentURL != undefined)
-        {
-            const embed_img = new EmbedBuilder()
-            .setTitle(date)
-            .setImage(AttachmentURL);
 
-            // Add message content if exists
-            if (MessageContent != "")
-            {
-                embed_img.setDescription('"' + MessageContent + '"');
-            }
-
-            cope.send({ embeds: [embed_img] }); 
-        }
-        else
-        {
-            cope.send(' ' + date + ':\n `"' + MessageContent + '"`');
-        }
-    }
-});
-
-// Reply Messages
-client.on('messageCreate', async (message) =>
-{
-    let msg = message.content.toLowerCase();
-
-    switch (msg)
-    {
-        case 'jack':
-            message.reply('is balding');
-            break;
-        case 'stick':
-            message.reply({ files: ['assets/stick.png'] });
-            break;
-    }
-});
         
 client.login(process.env.CLIENT_TOKEN);
