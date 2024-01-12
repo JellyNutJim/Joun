@@ -1,3 +1,3 @@
 # Joun
 
-A Discord Bot
+A Discord Bot made with Discord.js
