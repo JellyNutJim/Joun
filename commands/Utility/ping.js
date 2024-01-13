@@ -5,6 +5,6 @@ module.exports = {
 		.setName('ping')
 		.setDescription('Responds with latency on reply. (Not API latency)'),
 	async execute(interaction) {
-		await interaction.reply('Latency is: ' + (interaction.createdTimestamp - Date.now()) + 'ms.');
+		await interaction.reply('Latency is: ' + (Math.abs(interaction.createdTimestamp - Date.now())) + 'ms.');
 	},
 };
