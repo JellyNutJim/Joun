@@ -2,7 +2,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, GatewayIntentBits  } = require('discord.js');
+const axios = require('axios');
+const { Client, Collection, GatewayIntentBits, Events  } = require('discord.js');
 
 const client = new Client
     ({
@@ -52,9 +53,24 @@ for (const file of eventFiles) {
 /*
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    });*/
+    });
+
+client.once(Events.ClientReady, readyClient => {
+    sendData ();
+});
 
 
+const sendData = async (data) => {
+    try {
 
+        const res = await axios.post('http://localhost:3000/api/updateUsers', {
+            answer: 42
+        });
+    } catch (e)
+    {
+        console.log('Error sending data data: ', e);
+    }
+
+};*/
         
 client.login(process.env.CLIENT_TOKEN);
