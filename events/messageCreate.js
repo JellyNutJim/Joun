@@ -15,13 +15,14 @@ module.exports = {
 
         const sender = message.author;
         const id = sender.id;
-
+        
         // Jack Cope
         if (id == jack_id) {
             const date = new Date().toLocaleString();
-            const cope = message.client.channels.cache.get(test_channel_id);
+            const cope = message.client.channels.cache.get(cope_channel_id);
             const MessageContent = message.content;
             var AttachmentURL = (message.attachments.first()?.url);
+            message.react('🤓');
     
             if (AttachmentURL != undefined)
             {

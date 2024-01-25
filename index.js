@@ -2,7 +2,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 const fs = require('node:fs');
 const path = require('node:path');
-const axios = require('axios');
 const { Client, Collection, GatewayIntentBits, Events  } = require('discord.js');
 
 const client = new Client
