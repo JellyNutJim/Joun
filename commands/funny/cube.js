@@ -5,6 +5,6 @@ module.exports = {
 		.setName('cube')
 		.setDescription('The one who cuboids.'),
 	async execute(interaction) {
-		await interaction.reply({ files: ['assets/stick.png'] });
+		await interaction.reply({ files: ['assets/jake_cube.gif'] });
 	},
 };

@@ -5,6 +5,6 @@ module.exports = {
 		.setName('sphere')
 		.setDescription('Hughmungus.'),
 	async execute(interaction) {
-		await interaction.reply({ files: ['assets/stick.png'] });
+		await interaction.reply({ files: ['assets/hugh_sphere.gif'] });
 	},
 };
