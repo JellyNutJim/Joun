@@ -22,7 +22,7 @@ module.exports = {
             const cope = message.client.channels.cache.get(cope_channel_id);
             const MessageContent = message.content;
             var AttachmentURL = (message.attachments.first()?.url);
-            message.react('🤓');
+            //message.react('🤓');
     
             if (AttachmentURL != undefined)
             {
